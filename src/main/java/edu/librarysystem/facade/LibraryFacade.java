@@ -18,15 +18,11 @@ public class LibraryFacade {
     private final LibrarySystem librarySystem;
     private final LibraryItemService libraryItemService;
     private final UserService userService;
-    private final LoanSystem loanSystem;
-    private final Factory factory;
 
-    public LibraryFacade(LibrarySystem librarySystem, LibraryItemService libraryItemService, UserService userService, LoanSystem loanSystem, Factory factory) {
+    public LibraryFacade(LibrarySystem librarySystem, LibraryItemService libraryItemService, UserService userService) {
         this.librarySystem = librarySystem;
         this.libraryItemService = libraryItemService;
         this.userService = userService;
-        this.loanSystem = loanSystem;
-        this.factory = factory;
     }
 
     public void addBook(String title, String author, int pages, String isbn, int yearPublished) {
@@ -95,7 +91,6 @@ public class LibraryFacade {
         librarySystem.shutdown();
     }
 
-    // New methods to get sorted lists of books and members
     public List<Book> getBooksSortedBy(Comparator<Book> comparator) {
         return Library.getInstance().getBooksSortedBy(comparator);
     }

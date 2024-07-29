@@ -8,13 +8,13 @@ import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MemberBooksLoanedComparatorTest {
+public class MemberTotalBooksLoanedComparatorTest {
 
-    private MemberBooksLoanedComparator comparator;
+    private MemberTotalBooksLoanedComparator comparator;
 
     @BeforeEach
     public void setUp() {
-        comparator = new MemberBooksLoanedComparator();
+        comparator = new MemberTotalBooksLoanedComparator();
     }
 
     @Test
@@ -31,14 +31,14 @@ public class MemberBooksLoanedComparatorTest {
         member2.addLoanedBook(book1);
 
         int result = comparator.compare(member1, member2);
-        assertTrue(result > 0, "Member1 with 2 loaned books should be greater than Member2 with 1 loaned book");
+        assertTrue(result > 0, "Member1 with 2 total loaned books should be greater than Member2 with 1 total loaned book");
 
         result = comparator.compare(member2, member1);
-        assertTrue(result < 0, "Member2 with 1 loaned book should be less than Member1 with 2 loaned books");
+        assertTrue(result < 0, "Member2 with 1 total loaned book should be less than Member1 with 2 total loaned books");
 
         Member member3 = new Member("Member3");
         member3.addLoanedBook(book1);
         result = comparator.compare(member2, member3);
-        assertEquals(0, result, "Members with the same number of loaned books should be equal");
+        assertEquals(0, result, "Members with the same number of total loaned books should be equal");
     }
 }

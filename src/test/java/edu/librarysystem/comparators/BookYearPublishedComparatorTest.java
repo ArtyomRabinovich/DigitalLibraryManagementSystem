@@ -7,32 +7,27 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BookYearPublishedComparatorTest {
+
     private BookYearPublishedComparator comparator;
-    private Book book1;
-    private Book book2;
-    private Book book3;
 
     @BeforeEach
     public void setUp() {
         comparator = new BookYearPublishedComparator();
-        book1 = new Book("Effective Java", "Joshua Bloch", 416, "0134685997", 2018);
-        book2 = new Book("Clean Code", "Robert C. Martin", 464, "0132350882", 2008);
-        book3 = new Book("The Pragmatic Programmer", "Andrew Hunt", 320, "020161622X", 1999);
     }
 
     @Test
-    public void testCompareEqualYears() {
-        Book book4 = new Book("Some Book", "Some Author", 384, "1234567890", 2018);
-        assertEquals(0, comparator.compare(book1, book4));
-    }
+    public void testCompare() {
+        Book book1 = new Book("Book1", "Author1", 100, "ISBN1", 2000);
+        Book book2 = new Book("Book2", "Author2", 200, "ISBN2", 2010);
 
-    @Test
-    public void testCompareDifferentYears() {
-        assertTrue(comparator.compare(book1, book2) > 0); // 2018 is after 2008
-        assertTrue(comparator.compare(book2, book1) < 0); // 2008 is before 2018
-        assertTrue(comparator.compare(book1, book3) > 0); // 2018 is after 1999
-        assertTrue(comparator.compare(book3, book1) < 0); // 1999 is before 2018
-        assertTrue(comparator.compare(book2, book3) > 0); // 2008 is after 1999
-        assertTrue(comparator.compare(book3, book2) < 0); // 1999 is before 2008
+        int result = comparator.compare(book1, book2);
+        assertTrue(result < 0, "Book published in 2000 should be less than book published in 2010");
+
+        result = comparator.compare(book2, book1);
+        assertTrue(result > 0, "Book published in 2010 should be greater than book published in 2000");
+
+        Book book3 = new Book("Book3", "Author3", 150, "ISBN3", 2000);
+        result = comparator.compare(book1, book3);
+        assertEquals(0, result, "Books published in the same year should be equal");
     }
 }

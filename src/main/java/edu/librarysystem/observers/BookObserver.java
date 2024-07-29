@@ -8,15 +8,28 @@ import edu.librarysystem.services.UserService;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The BookObserver class observes changes in the status of books and updates the loan status of members.
+ */
 public class BookObserver implements Observer {
-    private Map<Integer, Integer> loanedBooks; // Map book ID to member ID
-    private UserService userService;
+    private  Map<Integer, Integer> loanedBooks; // Map book ID to member ID
+    private  UserService userService;
 
+    /**
+     * Constructs a new BookObserver with the specified user service.
+     *
+     * @param userService the user service to interact with members.
+     */
     public BookObserver(UserService userService) {
         this.loanedBooks = new HashMap<>();
         this.userService = userService;
     }
 
+    /**
+     * Updates the status of the book and the loan status of the member.
+     *
+     * @param item the library item to be updated.
+     */
     @Override
     public void update(LibraryItem item) {
         if (item instanceof Book book) {
@@ -39,6 +52,12 @@ public class BookObserver implements Observer {
         }
     }
 
+    /**
+     * Retrieves the member who has currently loaned the book with the specified ID.
+     *
+     * @param bookId the ID of the book.
+     * @return the member who has loaned the book, or null if the book is not loaned.
+     */
     public Member getLoaningMember(int bookId) {
         Integer memberId = loanedBooks.get(bookId);
         if (memberId != null) {

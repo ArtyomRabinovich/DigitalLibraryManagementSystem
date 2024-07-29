@@ -7,32 +7,27 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BookPagesComparatorTest {
+
     private BookPagesComparator comparator;
-    private Book book1;
-    private Book book2;
-    private Book book3;
 
     @BeforeEach
     public void setUp() {
         comparator = new BookPagesComparator();
-        book1 = new Book("Effective Java", "Joshua Bloch", 416, "0134685997", 2018);
-        book2 = new Book("Clean Code", "Robert C. Martin", 464, "0132350882", 2008);
-        book3 = new Book("The Pragmatic Programmer", "Andrew Hunt", 320, "020161622X", 1999);
     }
 
     @Test
-    public void testCompareEqualPages() {
-        Book book4 = new Book("Some Book", "Some Author", 416, "1234567890", 2020);
-        assertEquals(0, comparator.compare(book1, book4));
-    }
+    public void testCompare() {
+        Book book1 = new Book("Title1", "AuthorA", 200, "ISBN1", 2020);
+        Book book2 = new Book("Title2", "AuthorB", 300, "ISBN2", 2021);
 
-    @Test
-    public void testCompareDifferentPages() {
-        assertTrue(comparator.compare(book1, book2) < 0); // book1 has fewer pages than book2
-        assertTrue(comparator.compare(book2, book1) > 0); // book2 has more pages than book1
-        assertTrue(comparator.compare(book1, book3) > 0); // book1 has more pages than book3
-        assertTrue(comparator.compare(book3, book1) < 0); // book3 has fewer pages than book1
-        assertTrue(comparator.compare(book2, book3) > 0); // book2 has more pages than book3
-        assertTrue(comparator.compare(book3, book2) < 0); // book3 has fewer pages than book2
+        int result = comparator.compare(book1, book2);
+        assertTrue(result < 0, "Book with 200 pages should be less than book with 300 pages");
+
+        result = comparator.compare(book2, book1);
+        assertTrue(result > 0, "Book with 300 pages should be greater than book with 200 pages");
+
+        Book book3 = new Book("Title3", "AuthorC", 200, "ISBN3", 2019);
+        result = comparator.compare(book1, book3);
+        assertEquals(0, result, "Books with the same number of pages should be equal");
     }
 }

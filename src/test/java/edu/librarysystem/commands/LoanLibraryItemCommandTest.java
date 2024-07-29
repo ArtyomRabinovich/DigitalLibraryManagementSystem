@@ -5,42 +5,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class LoanLibraryItemCommandTest {
+
     private LibraryItemService libraryItemService;
-    private int itemId;
-    private int memberId;
-    private LoanLibraryItemCommand loanLibraryItemCommand;
+    private LoanLibraryItemCommand command;
+    private static final int ITEM_ID = 1;
+    private static final int MEMBER_ID = 1;
 
     @BeforeEach
     public void setUp() {
-        // Mocking LibraryItemService to isolate the test
         libraryItemService = Mockito.mock(LibraryItemService.class);
-
-        // Using real integer values for itemId and memberId
-        itemId = 789; // example itemId
-        memberId = 101; // example memberId
-
-        // Initializing the command with the mocked service and real itemId and memberId
-        loanLibraryItemCommand = new LoanLibraryItemCommand(libraryItemService, itemId, memberId);
+        command = new LoanLibraryItemCommand(libraryItemService, ITEM_ID, MEMBER_ID);
     }
 
     @Test
     public void testExecute() {
-        // Executing the command
-        loanLibraryItemCommand.execute();
-
-        // Verifying that loanItem was called exactly once with the correct itemId and memberId
-        verify(libraryItemService, times(1)).loanItem(itemId, memberId);
-    }
-
-    @Test
-    public void testExecuteSynchronization() {
-        // Ensuring the command executes within a synchronized block
-        synchronized (libraryItemService) {
-            loanLibraryItemCommand.execute();
-            verify(libraryItemService, times(1)).loanItem(itemId, memberId);
-        }
+        command.execute();
+        verify(libraryItemService, times(1)).loanItem(ITEM_ID, MEMBER_ID);
     }
 }

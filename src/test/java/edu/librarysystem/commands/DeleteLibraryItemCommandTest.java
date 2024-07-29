@@ -5,31 +5,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class DeleteLibraryItemCommandTest {
+
     private LibraryItemService libraryItemService;
-    private int itemId;
-    private DeleteLibraryItemCommand deleteLibraryItemCommand;
+    private DeleteLibraryItemCommand command;
+    private static final int ITEM_ID = 1;
 
     @BeforeEach
     public void setUp() {
         libraryItemService = Mockito.mock(LibraryItemService.class);
-        itemId = 123; // example itemId
-        deleteLibraryItemCommand = new DeleteLibraryItemCommand(libraryItemService, itemId);
+        command = new DeleteLibraryItemCommand(libraryItemService, ITEM_ID);
     }
 
     @Test
     public void testExecute() {
-        deleteLibraryItemCommand.execute();
-        verify(libraryItemService, times(1)).deleteItem(itemId);
-    }
-
-    @Test
-    public void testExecuteSynchronization() {
-        synchronized (libraryItemService) {
-            deleteLibraryItemCommand.execute();
-            verify(libraryItemService, times(1)).deleteItem(itemId);
-        }
+        command.execute();
+        verify(libraryItemService, times(1)).deleteItem(ITEM_ID);
     }
 }

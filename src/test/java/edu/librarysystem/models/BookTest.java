@@ -1,52 +1,94 @@
 package edu.librarysystem.models;
 
+import edu.librarysystem.interfaces.LibraryItem;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.lang.reflect.Field;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class BookTest {
+public class BookTest {
+
+    private Book book;
+    private static final String TITLE = "Effective Java";
+    private static final String AUTHOR = "Joshua Bloch";
+    private static final int PAGES = 416;
+    private static final String ISBN = "978-0134685991";
+    private static final int YEAR_PUBLISHED = 2017;
+
+    @BeforeEach
+    public void setUp() throws NoSuchFieldException, IllegalAccessException {
+        Field lastIdField = Book.class.getDeclaredField("lastId");
+        lastIdField.setAccessible(true);
+        lastIdField.setInt(null, 0);
+
+        book = new Book(TITLE, AUTHOR, PAGES, ISBN, YEAR_PUBLISHED);
+    }
 
     @Test
-    void testBookCreation() {
-        Book book = new Book("Effective Java", "Joshua Bloch", 412, "978-0134685991", 2018);
+    public void testGetId() {
+        int id = book.getId();
+        assertEquals(1, id);
+    }
 
-        assertEquals("Effective Java", book.getTitle());
-        assertEquals("Joshua Bloch", book.getAuthor());
-        assertEquals(412, book.getPages());
+    @Test
+    public void testGetTitle() {
+        assertEquals(TITLE, book.getTitle());
+    }
+
+    @Test
+    public void testGetAuthor() {
+        assertEquals(AUTHOR, book.getAuthor());
+    }
+
+    @Test
+    public void testGetPages() {
+        assertEquals(PAGES, book.getPages());
+    }
+
+    @Test
+    public void testIsAvailable() {
         assertTrue(book.isAvailable());
-        assertEquals("978-0134685991", book.getIsbn());
-        assertEquals(2018, book.getYearPublished());
-        assertNull(book.getLoanedTo());
     }
 
     @Test
-    void testSetLoanedTo() {
-        Book book = new Book("Effective Java", "Joshua Bloch", 412, "978-0134685991", 2018);
-        Member member = new Member("John Doe");
-
-        book.setLoanedTo(member);
-
-        assertEquals(member, book.getLoanedTo());
-    }
-
-    @Test
-    void testSetAvailable() {
-        Book book = new Book("Effective Java", "Joshua Bloch", 412, "978-0134685991", 2018);
-
+    public void testSetAvailable() {
         book.setAvailable(false);
-
         assertFalse(book.isAvailable());
     }
 
     @Test
-    void testClone() {
-        Book book = new Book("Effective Java", "Joshua Bloch", 412, "978-0134685991", 2018);
-        Book clonedBook = book.clone();
+    public void testGetLoanedTo() {
+        assertNull(book.getLoanedTo());
+    }
 
+    @Test
+    public void testSetLoanedTo() {
+        Member member = Mockito.mock(Member.class);
+        book.setLoanedTo(member);
+        assertEquals(member, book.getLoanedTo());
+    }
+
+    @Test
+    public void testClone() {
+        Book clonedBook = book.clone();
         assertNotSame(book, clonedBook);
         assertEquals(book.getTitle(), clonedBook.getTitle());
         assertEquals(book.getAuthor(), clonedBook.getAuthor());
         assertEquals(book.getPages(), clonedBook.getPages());
         assertEquals(book.getIsbn(), clonedBook.getIsbn());
         assertEquals(book.getYearPublished(), clonedBook.getYearPublished());
+    }
+
+    @Test
+    public void testGetIsbn() {
+        assertEquals(ISBN, book.getIsbn());
+    }
+
+    @Test
+    public void testGetYearPublished() {
+        assertEquals(YEAR_PUBLISHED, book.getYearPublished());
     }
 }

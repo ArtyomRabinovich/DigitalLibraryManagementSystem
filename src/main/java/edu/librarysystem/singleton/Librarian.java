@@ -30,7 +30,7 @@ public class Librarian {
         // Set the LoanSystem in the LibraryItemService
         libraryItemService.setLoanSystem(loanSystem);
 
-        this.libraryFacade = new LibraryFacade(new LibrarySystem(), libraryItemService, userService, loanSystem, new Factory());
+        this.libraryFacade = new LibraryFacade(new LibrarySystem(), libraryItemService, userService);
     }
 
     public static Librarian getInstance() {

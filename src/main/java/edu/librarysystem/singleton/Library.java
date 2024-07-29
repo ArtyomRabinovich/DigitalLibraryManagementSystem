@@ -5,10 +5,13 @@ import edu.librarysystem.interfaces.LibraryItem;
 import edu.librarysystem.models.Book;
 import edu.librarysystem.models.Member;
 import edu.librarysystem.observers.Observer;
-import edu.librarysystem.comparators.*;
 
 import java.util.*;
 
+/**
+ * The Library class is a singleton that manages library items and members.
+ * It provides methods to add, delete, loan, and return books, as well as manage members.
+ */
 public class Library {
     private static Library instance;
     private final Map<Integer, LibraryItem> items;
@@ -23,6 +26,11 @@ public class Library {
         factory = new Factory();  // Initialize the Factory
     }
 
+    /**
+     * Returns the singleton instance of the Library.
+     *
+     * @return the singleton instance of the Library.
+     */
     public static Library getInstance() {
         if (instance == null) {
             instance = new Library();
@@ -30,22 +38,46 @@ public class Library {
         return instance;
     }
 
+    /**
+     * Adds an observer to the list of observers.
+     *
+     * @param observer the observer to be added.
+     */
     public void addObserver(Observer observer) {
         if (!observers.contains(observer)) {
             observers.add(observer);
         }
     }
 
+    /**
+     * Removes an observer from the list of observers.
+     *
+     * @param observer the observer to be removed.
+     */
     public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
 
+    /**
+     * Notifies all observers about a change in a library item.
+     *
+     * @param item the library item that has changed.
+     */
     public void notifyObservers(LibraryItem item) {
         for (Observer observer : observers) {
             observer.update(item);
         }
     }
 
+    /**
+     * Adds a book to the library.
+     *
+     * @param title          the title of the book.
+     * @param author         the author of the book.
+     * @param pages          the number of pages in the book.
+     * @param isbn           the ISBN of the book.
+     * @param yearPublished  the year the book was published.
+     */
     public void addBook(String title, String author, int pages, String isbn, int yearPublished) {
         Book book = factory.createBook(title, author, pages, isbn, yearPublished);
         items.put(book.getId(), book);
@@ -53,6 +85,11 @@ public class Library {
         notifyObservers(book);
     }
 
+    /**
+     * Deletes a book from the library.
+     *
+     * @param id the ID of the book to be deleted.
+     */
     public void deleteBook(int id) {
         Book book = getBook(id);
         if (book != null) {
@@ -64,6 +101,12 @@ public class Library {
         }
     }
 
+    /**
+     * Retrieves a book by its ID.
+     *
+     * @param id the ID of the book to be retrieved.
+     * @return the book with the specified ID, or null if not found.
+     */
     public Book getBook(int id) {
         LibraryItem item = items.get(id);
         if (item instanceof Book) {
@@ -72,6 +115,12 @@ public class Library {
         return null;
     }
 
+    /**
+     * Loans a book to a member.
+     *
+     * @param id       the ID of the book to be loaned.
+     * @param memberId the ID of the member to loan the book to.
+     */
     public void loanBook(int id, int memberId) {
         Book book = getBook(id);
         if (book != null && book.isAvailable()) {
@@ -90,6 +139,11 @@ public class Library {
         }
     }
 
+    /**
+     * Returns a loaned book to the library.
+     *
+     * @param id the ID of the book to be returned.
+     */
     public void returnBook(int id) {
         Book book = getBook(id);
         if (book != null && !book.isAvailable()) {
@@ -106,12 +160,22 @@ public class Library {
         }
     }
 
+    /**
+     * Adds a member to the library.
+     *
+     * @param name the name of the member to be added.
+     */
     public void addMember(String name) {
         Member member = factory.createMember(name);
         members.put(member.getId(), member);
         System.out.println("Added member: " + member.getName());
     }
 
+    /**
+     * Deletes a member from the library.
+     *
+     * @param id the ID of the member to be deleted.
+     */
     public void deleteMember(int id) {
         Member member = members.remove(id);
         if (member != null) {
@@ -121,16 +185,26 @@ public class Library {
         }
     }
 
+    /**
+     * Retrieves a member by their ID.
+     *
+     * @param id the ID of the member to be retrieved.
+     * @return the member with the specified ID, or null if not found.
+     */
     public Member getMember(int id) {
         return members.get(id);
     }
 
+    /**
+     * Returns a summary of the library's items and members.
+     *
+     * @return a summary string of the library's items and members.
+     */
     public String getSummary() {
         StringBuilder summary = new StringBuilder();
         summary.append("Items:\n");
         for (LibraryItem item : items.values()) {
-            if (item instanceof Book) {
-                Book book = (Book) item;
+            if (item instanceof Book book) {
                 summary.append("Title: ").append(book.getTitle())
                         .append(", Author: ").append(book.getAuthor())
                         .append(", Available: ").append(book.isAvailable())
@@ -148,6 +222,12 @@ public class Library {
         return summary.toString();
     }
 
+    /**
+     * Clones a book by its ID.
+     *
+     * @param id the ID of the book to be cloned.
+     * @return a clone of the book, or null if the book was not found.
+     */
     public Book cloneBook(int id) {
         Book book = getBook(id);
         if (book != null) {
@@ -156,6 +236,11 @@ public class Library {
         return null;
     }
 
+    /**
+     * Retrieves all books in the library.
+     *
+     * @return a list of all books in the library.
+     */
     public List<Book> getAllBooks() {
         List<Book> allBooks = new ArrayList<>();
         for (LibraryItem item : items.values()) {
@@ -166,16 +251,33 @@ public class Library {
         return allBooks;
     }
 
+    /**
+     * Retrieves all members of the library.
+     *
+     * @return a list of all members of the library.
+     */
     public List<Member> getAllMembers() {
         return new ArrayList<>(members.values());
     }
 
+    /**
+     * Retrieves books sorted by a given comparator.
+     *
+     * @param comparator the comparator to sort the books.
+     * @return a list of books sorted by the given comparator.
+     */
     public List<Book> getBooksSortedBy(Comparator<Book> comparator) {
         List<Book> sortedBooks = getAllBooks();
         sortedBooks.sort(comparator);
         return sortedBooks;
     }
 
+    /**
+     * Retrieves members sorted by a given comparator.
+     *
+     * @param comparator the comparator to sort the members.
+     * @return a list of members sorted by the given comparator.
+     */
     public List<Member> getMembersSortedBy(Comparator<Member> comparator) {
         List<Member> sortedMembers = getAllMembers();
         sortedMembers.sort(comparator);
