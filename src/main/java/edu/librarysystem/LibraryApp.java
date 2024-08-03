@@ -22,6 +22,7 @@ public class LibraryApp extends Application {
      *                     the application scene can be set.
      * @throws Exception if there is any issue loading the main.fxml resource.
      */
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         URL fxmlLocation = getClass().getResource("/edu/librarysystem/main.fxml");
