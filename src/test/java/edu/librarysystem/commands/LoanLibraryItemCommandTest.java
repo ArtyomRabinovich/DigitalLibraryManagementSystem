@@ -5,25 +5,28 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+/**
+ * Test class for {@code LoanLibraryItemCommand}.
+ */
 public class LoanLibraryItemCommandTest {
 
     private LibraryItemService libraryItemService;
     private LoanLibraryItemCommand command;
-    private static final int ITEM_ID = 1;
-    private static final int MEMBER_ID = 1;
 
     @BeforeEach
     public void setUp() {
         libraryItemService = Mockito.mock(LibraryItemService.class);
-        command = new LoanLibraryItemCommand(libraryItemService, ITEM_ID, MEMBER_ID);
+        command = new LoanLibraryItemCommand(libraryItemService, 1, 1);
     }
 
+    /**
+     * Tests the {@code execute} method of {@code LoanLibraryItemCommand}.
+     * Verifies that the {@code loanItem} method of {@code LibraryItemService} is called
+     * with the correct parameters.
+     */
     @Test
     public void testExecute() {
         command.execute();
-        verify(libraryItemService, times(1)).loanItem(ITEM_ID, MEMBER_ID);
+        Mockito.verify(libraryItemService).loanItem(1, 1);
     }
 }

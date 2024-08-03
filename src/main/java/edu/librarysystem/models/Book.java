@@ -3,8 +3,8 @@ package edu.librarysystem.models;
 import edu.librarysystem.interfaces.LibraryItem;
 
 /**
- * The Book class represents a book in the library system. It implements
- * the LibraryItem interface and is cloneable.
+ * The {@code Book} class represents a book in the library system. It implements
+ * the {@code LibraryItem} interface and is cloneable.
  */
 public class Book implements LibraryItem, Cloneable {
     private static int lastId = 0;
@@ -19,13 +19,13 @@ public class Book implements LibraryItem, Cloneable {
     private Member loanedTo;
 
     /**
-     * Constructs a new Book with the specified title, author, pages, ISBN, and year published.
+     * Constructs a new {@code Book} with the specified title, author, pages, ISBN, and year published.
      *
-     * @param title the title of the book.
-     * @param author the author of the book.
-     * @param pages the number of pages in the book.
-     * @param isbn the ISBN of the book.
-     * @param yearPublished the year the book was published.
+     * @param title          the title of the book
+     * @param author         the author of the book
+     * @param pages          the number of pages in the book
+     * @param isbn           the ISBN of the book
+     * @param yearPublished  the year the book was published
      */
     public Book(String title, String author, int pages, String isbn, int yearPublished) {
         this.id = ++lastId;
@@ -41,7 +41,7 @@ public class Book implements LibraryItem, Cloneable {
     /**
      * Retrieves the unique identifier of the book.
      *
-     * @return the unique ID of the book.
+     * @return the unique ID of the book
      */
     public int getId() {
         return id;
@@ -106,7 +106,7 @@ public class Book implements LibraryItem, Cloneable {
     /**
      * Creates and returns a copy of this book with a new unique ID.
      *
-     * @return a clone of this book.
+     * @return a clone of this book
      */
     @Override
     public Book clone() {
@@ -122,7 +122,7 @@ public class Book implements LibraryItem, Cloneable {
     /**
      * Retrieves the ISBN of the book.
      *
-     * @return the ISBN of the book.
+     * @return the ISBN of the book
      */
     public String getIsbn() {
         return isbn;
@@ -131,7 +131,7 @@ public class Book implements LibraryItem, Cloneable {
     /**
      * Retrieves the year the book was published.
      *
-     * @return the year the book was published.
+     * @return the year the book was published
      */
     public int getYearPublished() {
         return yearPublished;

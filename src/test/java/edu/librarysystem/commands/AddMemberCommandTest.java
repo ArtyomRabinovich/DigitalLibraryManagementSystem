@@ -5,24 +5,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+/**
+ * Test class for {@code AddMemberCommand}.
+ */
 public class AddMemberCommandTest {
 
     private UserService userService;
     private AddMemberCommand command;
-    private static final String MEMBER_NAME = "Jane Doe";
 
     @BeforeEach
     public void setUp() {
         userService = Mockito.mock(UserService.class);
-        command = new AddMemberCommand(userService, MEMBER_NAME);
+        command = new AddMemberCommand(userService, "Test Member");
     }
 
+    /**
+     * Tests the {@code execute} method of {@code AddMemberCommand}.
+     * Verifies that the {@code addMember} method of {@code UserService} is called with the correct parameter.
+     */
     @Test
     public void testExecute() {
         command.execute();
-        verify(userService, times(1)).addMember(MEMBER_NAME);
+        Mockito.verify(userService).addMember("Test Member");
     }
 }

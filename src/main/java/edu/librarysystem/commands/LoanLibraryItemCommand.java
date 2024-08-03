@@ -4,8 +4,8 @@ import edu.librarysystem.interfaces.Command;
 import edu.librarysystem.services.LibraryItemService;
 
 /**
- * The LoanLibraryItemCommand class implements the Command interface and
- * represents a command to loan a library item to a member in the library system.
+ * The {@code LoanLibraryItemCommand} class implements the {@code Command} interface
+ * and represents a command to loan a library item to a member in the library system.
  */
 public class LoanLibraryItemCommand implements Command {
     private final LibraryItemService libraryItemService;
@@ -13,11 +13,11 @@ public class LoanLibraryItemCommand implements Command {
     private final int memberId;
 
     /**
-     * Constructs a new LoanLibraryItemCommand with the specified parameters.
+     * Constructs a new {@code LoanLibraryItemCommand} with the specified parameters.
      *
-     * @param libraryItemService the library item service to loan the item from.
-     * @param itemId             the ID of the library item to be loaned.
-     * @param memberId           the ID of the member to loan the item to.
+     * @param libraryItemService the library item service to loan the item from
+     * @param itemId             the ID of the library item to be loaned
+     * @param memberId           the ID of the member to loan the item to
      */
     public LoanLibraryItemCommand(LibraryItemService libraryItemService, int itemId, int memberId) {
         this.libraryItemService = libraryItemService;

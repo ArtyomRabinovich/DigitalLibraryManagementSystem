@@ -1,0 +1,222 @@
+@startuml
+interface LibraryItem {
+  +getId(): int
+  +getTitle(): String
+  +getAuthor(): String
+  +getPages(): int
+  +isAvailable(): boolean
+  +setAvailable(boolean available): void
+  +getLoanedTo(): Member
+  +setLoanedTo(Member loanedTo): void
+}
+
+interface User {
+  +getId(): int
+  +getName(): String
+  +getCreationDate(): Date
+  +getLoanedBooks(): List<Book>
+  +addLoanedBook(Book book): void
+  +removeLoanedBook(Book book): void
+  +getTotalBooksLoaned(): int
+  +getCurrentlyLoanedBooks(): int
+}
+
+interface LibraryChangeListener {
+  +onLibraryChanged(): void
+}
+
+class Book implements LibraryItem, Cloneable {
+  -int id
+  -String title
+  -String author
+  -int pages
+  -boolean available
+  -String isbn
+  -int yearPublished
+  -Member loanedTo
+  +Book(String title, String author, int pages, String isbn, int yearPublished)
+  +clone(): Book
+}
+
+class Member implements User {
+  -int id
+  -String name
+  -Date creationDate
+  -List<Book> loanedBooks
+  -int totalBooksLoaned
+  -int currentlyLoanedBooks
+  +Member(String name)
+}
+
+class Factory {
+  +createBook(String title, String author, int pages, String isbn, int yearPublished): Book
+  +createMember(String name): Member
+}
+
+class Library {
+  -static Library instance
+  -Map<Integer, LibraryItem> items
+  -Map<Integer, Member> members
+  -Factory factory
+  -List<LibraryChangeListener> changeListeners
+  +getInstance(): Library
+  +addChangeListener(LibraryChangeListener listener): void
+  +notifyChangeListeners(): void
+  +addBook(String title, String author, int pages, String isbn, int yearPublished): void
+  +deleteBook(int id): boolean
+  +getBook(int id): Book
+  +loanBook(int id, int memberId): void
+  +returnBook(int id): void
+  +addMember(String name): void
+  +deleteMember(int id): boolean
+  +getMember(int id): Member
+  +cloneBook(int id): void
+  +getAllBooks(): List<Book>
+  +getAllMembers(): List<Member>
+}
+
+class Librarian {
+  -static Librarian instance
+  -LibraryFacade libraryFacade
+  +getInstance(): Librarian
+  +addMember(String name): void
+  +addBook(String title, String author, int pages, String isbn, int yearPublished): void
+  +loanBook(int bookId, int memberId): void
+  +returnBook(int bookId): void
+  +deleteBook(int bookId): boolean
+  +deleteMember(int memberId): boolean
+  +duplicateBook(int bookId): void
+}
+
+class LibraryFacade {
+  -LibrarySystem librarySystem
+  -LibraryItemService libraryItemService
+  -UserService userService
+  +addMember(String name): void
+  +addBook(String title, String author, int pages, String isbn, int yearPublished): void
+  +loanBook(int bookId, int memberId): void
+  +returnBook(int bookId): void
+  +deleteBook(int bookId): boolean
+  +deleteMember(int memberId): boolean
+  +duplicateBook(int bookId): void
+}
+
+class LibrarySystem {
+  -List<Command> commands
+  +executeCommand(Command command): void
+}
+
+class LibraryItemService {
+  +addBook(Library library, String title, String author, int pages, String isbn, int yearPublished): void
+  +deleteBook(Library library, int id): boolean
+  +loanBook(Library library, int bookId, int memberId): void
+  +returnBook(Library library, int bookId): void
+  +duplicateBook(Library library, int bookId): void
+}
+
+class UserService {
+  +addMember(Library library, String name): void
+  +deleteMember(Library library, int id): boolean
+}
+
+interface Command {
+  +execute(): void
+}
+
+class AddMemberCommand implements Command {
+  -UserService userService
+  -Library library
+  -String name
+  +AddMemberCommand(UserService userService, Library library, String name)
+  +execute(): void
+}
+
+class AddBookCommand implements Command {
+  -LibraryItemService libraryItemService
+  -Library library
+  -String title
+  -String author
+  -int pages
+  -String isbn
+  -int yearPublished
+  +AddBookCommand(LibraryItemService libraryItemService, Library library, String title, String author, int pages, String isbn, int yearPublished)
+  +execute(): void
+}
+
+class LoanBookCommand implements Command {
+  -LibraryItemService libraryItemService
+  -Library library
+  -int bookId
+  -int memberId
+  +LoanBookCommand(LibraryItemService libraryItemService, Library library, int bookId, int memberId)
+  +execute(): void
+}
+
+class ReturnBookCommand implements Command {
+  -LibraryItemService libraryItemService
+  -Library library
+  -int bookId
+  +ReturnBookCommand(LibraryItemService libraryItemService, Library library, int bookId)
+  +execute(): void
+}
+
+class DeleteBookCommand implements Command {
+  -LibraryItemService libraryItemService
+  -Library library
+  -int bookId
+  +DeleteBookCommand(LibraryItemService libraryItemService, Library library, int bookId)
+  +execute(): void
+}
+
+class DeleteMemberCommand implements Command {
+  -UserService userService
+  -Library library
+  -int memberId
+  +DeleteMemberCommand(UserService userService, Library library, int memberId)
+  +execute(): void
+}
+
+class DuplicateBookCommand implements Command {
+  -LibraryItemService libraryItemService
+  -Library library
+  -int bookId
+  +DuplicateBookCommand(LibraryItemService libraryItemService, Library library, int bookId)
+  +execute(): void
+}
+
+LibraryFacade --> LibrarySystem
+LibraryFacade --> Command
+LibraryFacade --> LibraryItemService
+LibraryFacade --> UserService
+Librarian --> LibraryFacade
+Library *-- LibraryItem
+Library *-- Member
+Library *-- Factory
+Library *-- LibraryChangeListener
+Book --> Member
+Member --> Book
+LibrarySystem --> Command
+Command <|-- AddMemberCommand
+Command <|-- AddBookCommand
+Command <|-- LoanBookCommand
+Command <|-- ReturnBookCommand
+Command <|-- DeleteBookCommand
+Command <|-- DeleteMemberCommand
+Command <|-- DuplicateBookCommand
+AddMemberCommand --> UserService
+AddMemberCommand --> Library
+AddBookCommand --> LibraryItemService
+AddBookCommand --> Library
+LoanBookCommand --> LibraryItemService
+LoanBookCommand --> Library
+ReturnBookCommand --> LibraryItemService
+ReturnBookCommand --> Library
+DeleteBookCommand --> LibraryItemService
+DeleteBookCommand --> Library
+DeleteMemberCommand --> UserService
+DeleteMemberCommand --> Library
+DuplicateBookCommand --> LibraryItemService
+DuplicateBookCommand --> Library
+LibraryItemService --> Library
+UserService --> Library
+@enduml

@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,6 +26,9 @@ public class MainController implements LibraryChangeListener {
 
     @FXML
     private TableView<Book> bookTableView;
+
+    @FXML
+    private TableColumn<Book, Integer> bookIdColumn;
 
     @FXML
     private TableColumn<Book, String> bookTitleColumn;
@@ -51,6 +55,9 @@ public class MainController implements LibraryChangeListener {
     private TableView<Member> memberTableView;
 
     @FXML
+    private TableColumn<Member, Integer> memberIdColumn;
+
+    @FXML
     private TableColumn<Member, String> memberNameColumn;
 
     @FXML
@@ -62,12 +69,28 @@ public class MainController implements LibraryChangeListener {
     @FXML
     private TableColumn<Member, String> memberCreationDateColumn;
 
+    @FXML
+    private Label totalBooksLabel;
+
+    @FXML
+    private Label totalMembersLabel;
+
+    @FXML
+    private Label totalLoanedBooksLabel;
+
+    @FXML
+    private Label activeReadersLabel;
+
+    @FXML
+    private Label totalBooksLoanedLabel;
+
     private final Library library = Library.getInstance();
 
     @FXML
     public void initialize() {
         library.addChangeListener(this);  // Register this controller as a listener
 
+        bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         bookTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         bookAuthorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
         bookPagesColumn.setCellValueFactory(new PropertyValueFactory<>("pages"));
@@ -81,6 +104,7 @@ public class MainController implements LibraryChangeListener {
             return new SimpleStringProperty(book.getLoanedTo() != null ? book.getLoanedTo().getName() : "");
         });
 
+        memberIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         memberNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         memberTotalBooksLoanedColumn.setCellValueFactory(new PropertyValueFactory<>("totalBooksLoaned"));
         memberCurrentlyLoanedBooksColumn.setCellValueFactory(new PropertyValueFactory<>("currentlyLoanedBooks"));
@@ -88,18 +112,21 @@ public class MainController implements LibraryChangeListener {
 
         loadBookData();
         loadMemberData();
+        loadStatistics();
     }
 
     @FXML
     private void handleAddMember(ActionEvent event) throws IOException {
         openDialog("/edu/librarysystem/addMember.fxml", "Add Member");
         loadMemberData();
+        loadStatistics();
     }
 
     @FXML
     private void handleAddBook(ActionEvent event) throws IOException {
         openDialog("/edu/librarysystem/addBook.fxml", "Add Book");
         loadBookData();
+        loadStatistics();
     }
 
     @FXML
@@ -107,6 +134,7 @@ public class MainController implements LibraryChangeListener {
         openDialog("/edu/librarysystem/loanBook.fxml", "Loan Book");
         loadBookData();
         loadMemberData();
+        loadStatistics();
     }
 
     @FXML
@@ -114,6 +142,7 @@ public class MainController implements LibraryChangeListener {
         openDialog("/edu/librarysystem/returnBook.fxml", "Return Book");
         loadBookData();
         loadMemberData();
+        loadStatistics();
     }
 
     @FXML
@@ -121,12 +150,14 @@ public class MainController implements LibraryChangeListener {
         openDialog("/edu/librarysystem/deleteBook.fxml", "Delete Book");
         loadBookData();
         loadMemberData();
+        loadStatistics();
     }
 
     @FXML
     private void handleDeleteMember(ActionEvent event) throws IOException {
         openDialog("/edu/librarysystem/deleteMember.fxml", "Delete Member");
         loadMemberData();
+        loadStatistics();
     }
 
     @FXML
@@ -134,6 +165,7 @@ public class MainController implements LibraryChangeListener {
         openDialog("/edu/librarysystem/cloneBook.fxml", "Clone Book");
         loadBookData();
         loadMemberData();
+        loadStatistics();
     }
 
     private void openDialog(String fxmlFile, String title) throws IOException {
@@ -144,6 +176,7 @@ public class MainController implements LibraryChangeListener {
         stage.showAndWait();
         loadBookData();
         loadMemberData();
+        loadStatistics();
     }
 
     private void loadBookData() {
@@ -162,10 +195,26 @@ public class MainController implements LibraryChangeListener {
         memberTableView.refresh(); // Explicitly refresh the table view
     }
 
+    private void loadStatistics() {
+        int totalBooks = library.getAllBooks().size();
+        int totalAvailableBooks = (int) library.getAllBooks().stream().filter(Book::isAvailable).count();
+        int totalMembers = library.getAllMembers().size();
+        int totalLoanedBooks = totalBooks - totalAvailableBooks;
+        int activeReaders = (int) library.getAllMembers().stream().filter(member -> member.getCurrentlyLoanedBooks() > 0).count();
+        int totalBooksLoaned = library.getAllMembers().stream().mapToInt(Member::getTotalBooksLoaned).sum();
+
+        totalBooksLabel.setText("Total Available Books: " + totalAvailableBooks);
+        totalMembersLabel.setText("Total Members: " + totalMembers);
+        totalLoanedBooksLabel.setText("Total Loaned Books: " + totalLoanedBooks);
+        activeReadersLabel.setText("Active Readers: " + activeReaders);
+        totalBooksLoanedLabel.setText("Total Books Loaned: " + totalBooksLoaned);
+    }
+
     @Override
     public void onLibraryChanged() {
         System.out.println("Library change detected");
         loadBookData();
         loadMemberData();
+        loadStatistics();
     }
 }

@@ -4,8 +4,8 @@ import edu.librarysystem.interfaces.Command;
 import edu.librarysystem.services.LibraryItemService;
 
 /**
- * The AddLibraryItemCommand class implements the Command interface and
- * represents a command to add a new library item to the library system.
+ * The {@code AddLibraryItemCommand} class implements the {@code Command} interface
+ * and represents a command to add a new library item to the library system.
  */
 public class AddLibraryItemCommand implements Command {
     private final LibraryItemService libraryItemService;
@@ -16,14 +16,14 @@ public class AddLibraryItemCommand implements Command {
     private final int yearPublished;
 
     /**
-     * Constructs a new AddLibraryItemCommand with the specified parameters.
+     * Constructs a new {@code AddLibraryItemCommand} with the specified parameters.
      *
-     * @param libraryItemService the library item service to add the item to.
-     * @param title              the title of the library item.
-     * @param author             the author of the library item.
-     * @param pages              the number of pages in the library item.
-     * @param isbn               the ISBN of the library item.
-     * @param yearPublished      the year the library item was published.
+     * @param libraryItemService the library item service to add the item to
+     * @param title              the title of the library item
+     * @param author             the author of the library item
+     * @param pages              the number of pages in the library item
+     * @param isbn               the ISBN of the library item
+     * @param yearPublished      the year the library item was published
      */
     public AddLibraryItemCommand(LibraryItemService libraryItemService, String title, String author, int pages, String isbn, int yearPublished) {
         this.libraryItemService = libraryItemService;

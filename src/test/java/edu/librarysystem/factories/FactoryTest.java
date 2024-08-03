@@ -4,37 +4,39 @@ import edu.librarysystem.models.Book;
 import edu.librarysystem.models.Member;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * Test class for {@code Factory}.
+ */
 public class FactoryTest {
 
     private final Factory factory = new Factory();
 
+    /**
+     * Tests the {@code createBook} method of {@code Factory}.
+     * Verifies that a {@code Book} instance is created with the correct parameters.
+     */
     @Test
     public void testCreateBook() {
-        String title = "Test Book";
-        String author = "Test Author";
-        int pages = 123;
-        String isbn = "123-4567890123";
-        int yearPublished = 2020;
-
-        Book book = factory.createBook(title, author, pages, isbn, yearPublished);
-
+        Book book = factory.createBook("Test Title", "Test Author", 123, "1234567890", 2021);
         assertNotNull(book);
-        assertEquals(title, book.getTitle());
-        assertEquals(author, book.getAuthor());
-        assertEquals(pages, book.getPages());
-        assertEquals(isbn, book.getIsbn());
-        assertEquals(yearPublished, book.getYearPublished());
+        assertEquals("Test Title", book.getTitle());
+        assertEquals("Test Author", book.getAuthor());
+        assertEquals(123, book.getPages());
+        assertEquals("1234567890", book.getIsbn());
+        assertEquals(2021, book.getYearPublished());
     }
 
+    /**
+     * Tests the {@code createMember} method of {@code Factory}.
+     * Verifies that a {@code Member} instance is created with the correct name.
+     */
     @Test
     public void testCreateMember() {
-        String name = "Test Member";
-
-        Member member = factory.createMember(name);
-
+        Member member = factory.createMember("Test Member");
         assertNotNull(member);
-        assertEquals(name, member.getName());
+        assertEquals("Test Member", member.getName());
     }
 }

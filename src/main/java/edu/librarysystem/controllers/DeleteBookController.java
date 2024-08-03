@@ -2,7 +2,10 @@ package edu.librarysystem.controllers;
 
 import edu.librarysystem.singleton.Librarian;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.scene.control.ButtonType;
 
 public class DeleteBookController {
 
@@ -13,10 +16,40 @@ public class DeleteBookController {
 
     @FXML
     private void handleDeleteBook() {
-        int bookId = Integer.parseInt(bookIdField.getText());
+        String bookIdText = bookIdField.getText();
 
-        librarian.deleteBook(bookId);
+        int bookId;
+        try {
+            if (bookIdText == null || bookIdText.trim().isEmpty()) {
+                throw new NumberFormatException();
+            }
+            bookId = Integer.parseInt(bookIdText);
+            if (bookId <= 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Invalid Input", "Book ID must be a positive integer.");
+            return;
+        }
 
+        // Attempt to delete the book
+        if (!librarian.deleteBook(bookId)) {
+            showAlert("Cannot Delete", "The book is currently loaned and cannot be deleted.");
+            return;
+        }
+
+        // Clear the field
         bookIdField.clear();
+
+        // Close the popup
+        Stage stage = (Stage) bookIdField.getScene().getWindow();
+        stage.close();
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, content, ButtonType.OK);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.showAndWait();
     }
 }

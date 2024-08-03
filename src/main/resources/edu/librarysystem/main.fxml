@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
@@ -17,8 +18,17 @@
         <Button text="Clone Book" onAction="#handleCloneBook"/>
     </HBox>
 
+    <HBox spacing="10">
+        <Label fx:id="totalBooksLabel" text="Total Available Books: 0"/>
+        <Label fx:id="totalMembersLabel" text="Total Members: 0"/>
+        <Label fx:id="totalLoanedBooksLabel" text="Total Loaned Books: 0"/>
+        <Label fx:id="activeReadersLabel" text="Active Readers: 0"/>
+        <Label fx:id="totalBooksLoanedLabel" text="Total Books Loaned: 0"/>
+    </HBox>
+
     <TableView fx:id="bookTableView" prefHeight="200">
         <columns>
+            <TableColumn fx:id="bookIdColumn" text="ID" />
             <TableColumn fx:id="bookTitleColumn" text="Title" />
             <TableColumn fx:id="bookAuthorColumn" text="Author" />
             <TableColumn fx:id="bookPagesColumn" text="Pages" />
@@ -31,6 +41,7 @@
 
     <TableView fx:id="memberTableView" prefHeight="200">
         <columns>
+            <TableColumn fx:id="memberIdColumn" text="ID" />
             <TableColumn fx:id="memberNameColumn" text="Name" />
             <TableColumn fx:id="memberTotalBooksLoanedColumn" text="Total Books Loaned" />
             <TableColumn fx:id="memberCurrentlyLoanedBooksColumn" text="Currently Loaned Books" />

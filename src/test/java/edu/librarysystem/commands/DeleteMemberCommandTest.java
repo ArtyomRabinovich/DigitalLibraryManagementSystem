@@ -5,24 +5,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+/**
+ * Test class for {@code DeleteMemberCommand}.
+ */
 public class DeleteMemberCommandTest {
 
     private UserService userService;
     private DeleteMemberCommand command;
-    private static final int MEMBER_ID = 1;
 
     @BeforeEach
     public void setUp() {
         userService = Mockito.mock(UserService.class);
-        command = new DeleteMemberCommand(userService, MEMBER_ID);
+        command = new DeleteMemberCommand(userService, 1);
     }
 
+    /**
+     * Tests the {@code execute} method of {@code DeleteMemberCommand}.
+     * Verifies that the {@code deleteMember} method of {@code UserService} is called with the correct parameter.
+     */
     @Test
     public void testExecute() {
         command.execute();
-        verify(userService, times(1)).deleteMember(MEMBER_ID);
+        Mockito.verify(userService).deleteMember(1);
     }
 }

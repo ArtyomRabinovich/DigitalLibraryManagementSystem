@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The Member class represents a member of the library system. It implements
- * the User interface.
+ * The {@code Member} class represents a member of the library system. It implements
+ * the {@code User} interface.
  */
 public class Member implements User {
     private static int lastId = 0;
@@ -20,9 +20,9 @@ public class Member implements User {
     private int currentlyLoanedBooks;
 
     /**
-     * Constructs a new Member with the specified name.
+     * Constructs a new {@code Member} with the specified name.
      *
-     * @param name the name of the member.
+     * @param name the name of the member
      */
     public Member(String name) {
         this.id = ++lastId;

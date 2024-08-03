@@ -5,24 +5,27 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+/**
+ * Test class for {@code DeleteLibraryItemCommand}.
+ */
 public class DeleteLibraryItemCommandTest {
 
     private LibraryItemService libraryItemService;
     private DeleteLibraryItemCommand command;
-    private static final int ITEM_ID = 1;
 
     @BeforeEach
     public void setUp() {
         libraryItemService = Mockito.mock(LibraryItemService.class);
-        command = new DeleteLibraryItemCommand(libraryItemService, ITEM_ID);
+        command = new DeleteLibraryItemCommand(libraryItemService, 1);
     }
 
+    /**
+     * Tests the {@code execute} method of {@code DeleteLibraryItemCommand}.
+     * Verifies that the {@code deleteItem} method of {@code LibraryItemService} is called with the correct parameter.
+     */
     @Test
     public void testExecute() {
         command.execute();
-        verify(libraryItemService, times(1)).deleteItem(ITEM_ID);
+        Mockito.verify(libraryItemService).deleteItem(1);
     }
 }
