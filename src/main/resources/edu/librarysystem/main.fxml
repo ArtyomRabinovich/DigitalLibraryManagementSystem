@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.librarysystem.controllers.MainController" spacing="10">
+    <HBox spacing="10">
+        <Button text="Add Member" onAction="#handleAddMember"/>
+        <Button text="Add Book" onAction="#handleAddBook"/>
+        <Button text="Loan Book" onAction="#handleLoanBook"/>
+        <Button text="Return Book" onAction="#handleReturnBook"/>
+        <Button text="Delete Book" onAction="#handleDeleteBook"/>
+        <Button text="Delete Member" onAction="#handleDeleteMember"/>
+        <Button text="Clone Book" onAction="#handleCloneBook"/>
+    </HBox>
+
+    <TableView fx:id="bookTableView" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="bookTitleColumn" text="Title" />
+            <TableColumn fx:id="bookAuthorColumn" text="Author" />
+            <TableColumn fx:id="bookPagesColumn" text="Pages" />
+            <TableColumn fx:id="bookAvailableColumn" text="Available" />
+            <TableColumn fx:id="bookLoanedToColumn" text="Loaned To" />
+            <TableColumn fx:id="bookIsbnColumn" text="ISBN" />
+            <TableColumn fx:id="bookYearPublishedColumn" text="Year Published" />
+        </columns>
+    </TableView>
+
+    <TableView fx:id="memberTableView" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="memberNameColumn" text="Name" />
+            <TableColumn fx:id="memberTotalBooksLoanedColumn" text="Total Books Loaned" />
+            <TableColumn fx:id="memberCurrentlyLoanedBooksColumn" text="Currently Loaned Books" />
+            <TableColumn fx:id="memberCreationDateColumn" text="Creation Date" />
+        </columns>
+    </TableView>
+</VBox>

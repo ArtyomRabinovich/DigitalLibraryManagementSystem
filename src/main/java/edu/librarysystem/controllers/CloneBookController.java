@@ -1,22 +1,22 @@
 package edu.librarysystem.controllers;
 
+import edu.librarysystem.models.Book;
 import edu.librarysystem.singleton.Librarian;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class ReturnBookController {
+public class CloneBookController {
 
     @FXML
     private TextField bookIdField;
 
+
     private final Librarian librarian = Librarian.getInstance();
 
     @FXML
-    private void handleReturnBook() {
+    private void handleCloneBook() {
         int bookId = Integer.parseInt(bookIdField.getText());
-
-        librarian.returnBook(bookId);
-
+        librarian.duplicateBook(bookId);
         bookIdField.clear();
     }
 }

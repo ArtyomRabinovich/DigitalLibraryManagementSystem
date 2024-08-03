@@ -1,15 +1,22 @@
 package edu.librarysystem.controllers;
 
-import edu.librarysystem.facade.LibraryFacade;
+import edu.librarysystem.singleton.Librarian;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class DeleteBookController {
-    private LibraryFacade libraryFacade;
 
-    public DeleteBookController(LibraryFacade libraryFacade) {
-        this.libraryFacade = libraryFacade;
-    }
+    @FXML
+    private TextField bookIdField;
 
-    public void deleteBook(int bookId) {
-        libraryFacade.deleteBook(bookId);
+    private final Librarian librarian = Librarian.getInstance();
+
+    @FXML
+    private void handleDeleteBook() {
+        int bookId = Integer.parseInt(bookIdField.getText());
+
+        librarian.deleteBook(bookId);
+
+        bookIdField.clear();
     }
 }

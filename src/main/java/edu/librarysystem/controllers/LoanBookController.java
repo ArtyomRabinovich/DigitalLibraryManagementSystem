@@ -1,15 +1,26 @@
 package edu.librarysystem.controllers;
 
-import edu.librarysystem.facade.LibraryFacade;
+import edu.librarysystem.singleton.Librarian;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class LoanBookController {
-    private LibraryFacade libraryFacade;
 
-    public LoanBookController(LibraryFacade libraryFacade) {
-        this.libraryFacade = libraryFacade;
-    }
+    @FXML
+    private TextField bookIdField;
+    @FXML
+    private TextField memberIdField;
 
-    public void loanBook(int bookId, int memberId) {
-        libraryFacade.loanBook(bookId, memberId);
+    private final Librarian librarian = Librarian.getInstance();
+
+    @FXML
+    private void handleLoanBook() {
+        int bookId = Integer.parseInt(bookIdField.getText());
+        int memberId = Integer.parseInt(memberIdField.getText());
+
+        librarian.loanBook(bookId, memberId);
+
+        bookIdField.clear();
+        memberIdField.clear();
     }
 }

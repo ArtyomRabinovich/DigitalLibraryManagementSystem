@@ -1,16 +1,38 @@
 package edu.librarysystem.controllers;
-import edu.librarysystem.facade.LibraryFacade;
+
+import edu.librarysystem.singleton.Librarian;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class AddBookController {
-    private LibraryFacade libraryFacade;
 
-    public AddBookController(LibraryFacade libraryFacade) {
-        this.libraryFacade = libraryFacade;
-    }
+    @FXML
+    private TextField titleField;
+    @FXML
+    private TextField authorField;
+    @FXML
+    private TextField pagesField;
+    @FXML
+    private TextField isbnField;
+    @FXML
+    private TextField yearPublishedField;
 
-    public void addBook(String title, String author, int pages, String isbn, int yearPublished) {
-        libraryFacade.addBook(title, author, pages, isbn, yearPublished);
+    private final Librarian librarian = Librarian.getInstance();
+
+    @FXML
+    private void handleAddBook() {
+        String title = titleField.getText();
+        String author = authorField.getText();
+        int pages = Integer.parseInt(pagesField.getText());
+        String isbn = isbnField.getText();
+        int yearPublished = Integer.parseInt(yearPublishedField.getText());
+
+        librarian.addBook(title, author, pages, isbn, yearPublished);
+
+        titleField.clear();
+        authorField.clear();
+        pagesField.clear();
+        isbnField.clear();
+        yearPublishedField.clear();
     }
 }
-
-

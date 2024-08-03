@@ -1,15 +1,20 @@
 package edu.librarysystem.controllers;
-import edu.librarysystem.facade.LibraryFacade;
+
+import edu.librarysystem.singleton.Librarian;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class AddMemberController {
-    private LibraryFacade libraryFacade;
 
-    public AddMemberController(LibraryFacade libraryFacade) {
-        this.libraryFacade = libraryFacade;
-    }
+    @FXML
+    private TextField memberNameField;
 
-    public void addMember(String name) {
-        libraryFacade.addMember(name);
+    private final Librarian librarian = Librarian.getInstance();
+
+    @FXML
+    private void handleAddMember() {
+        String memberName = memberNameField.getText();
+        librarian.addMember(memberName);
+        memberNameField.clear();
     }
 }
-

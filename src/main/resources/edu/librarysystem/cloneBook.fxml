@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 
 <?import javafx.geometry.Insets?>
-<GridPane fx:controller="edu.librarysystem.controllers.DeleteBookController"
+<GridPane fx:controller="edu.librarysystem.controllers.CloneBookController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
@@ -15,5 +15,6 @@
     <Label text="Book ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
     <TextField fx:id="bookIdField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-    <Button text="Delete Book" onAction="#handleDeleteBook" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <Button text="Clone Book" onAction="#handleCloneBook" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <Label fx:id="clonedBookLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 </GridPane>

@@ -23,7 +23,4 @@ public class LibrarySystem {
         }
     }
 
-    public void shutdown() {
-        System.out.println("Shutting down the command system...");
-    }
 }

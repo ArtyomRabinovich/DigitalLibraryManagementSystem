@@ -9,7 +9,7 @@ import edu.librarysystem.interfaces.LibraryItem;
 public class Book implements LibraryItem, Cloneable {
     private static int lastId = 0;
 
-    private final int id;
+    private int id;
     private final String title;
     private final String author;
     private final int pages;
@@ -104,16 +104,18 @@ public class Book implements LibraryItem, Cloneable {
     }
 
     /**
-     * Creates and returns a copy of this book.
+     * Creates and returns a copy of this book with a new unique ID.
      *
      * @return a clone of this book.
      */
     @Override
     public Book clone() {
         try {
-            return (Book) super.clone();
+            Book cloned = (Book) super.clone();
+            cloned.id = ++lastId; // Assign a new unique ID
+            return cloned;
         } catch (CloneNotSupportedException e) {
-            throw new AssertionError(); // Can't happen
+            throw new AssertionError();
         }
     }
 

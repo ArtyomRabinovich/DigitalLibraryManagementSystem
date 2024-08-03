@@ -1,18 +1,11 @@
 package edu.librarysystem.facade;
 
 import edu.librarysystem.commands.*;
-import edu.librarysystem.factories.Factory;
 import edu.librarysystem.interfaces.Command;
-import edu.librarysystem.interfaces.LibraryItem;
 import edu.librarysystem.invoker.LibrarySystem;
-import edu.librarysystem.models.Book;
-import edu.librarysystem.models.Member;
 import edu.librarysystem.services.LibraryItemService;
 import edu.librarysystem.services.UserService;
-import edu.librarysystem.observers.LoanSystem;
-import edu.librarysystem.singleton.Library;
-import java.util.Comparator;
-import java.util.List;
+
 
 public class LibraryFacade {
     private final LibrarySystem librarySystem;
@@ -55,47 +48,10 @@ public class LibraryFacade {
         librarySystem.addCommand(deleteMemberCommand);
     }
 
-    public String getLibrarySummary() {
-        return Library.getInstance().getSummary();
+    public void duplicateBook(int id) {
+        DuplicateBookCommand duplicateBookCommand = new DuplicateBookCommand(libraryItemService, id);
+        librarySystem.addCommand(duplicateBookCommand);
     }
 
-    public Book duplicateBook(int id) {
-        LibraryItem item = libraryItemService.getItem(id);
-        if (item instanceof Book) {
-            return Library.getInstance().cloneBook(id);
-        }
-        return null;
-    }
 
-    public boolean isBookAvailable(int id) {
-        LibraryItem item = libraryItemService.getItem(id);
-        if (item instanceof Book book) {
-            return book.isAvailable();
-        }
-        return false;
-    }
-
-    public Member getLoaningMember(int id) {
-        LibraryItem item = libraryItemService.getItem(id);
-        if (item instanceof Book book) {
-            return book.getLoanedTo();
-        }
-        return null;
-    }
-
-    public Member getMember(int id) {
-        return userService.getMember(id);
-    }
-
-    public void shutdown() {
-        librarySystem.shutdown();
-    }
-
-    public List<Book> getBooksSortedBy(Comparator<Book> comparator) {
-        return Library.getInstance().getBooksSortedBy(comparator);
-    }
-
-    public List<Member> getMembersSortedBy(Comparator<Member> comparator) {
-        return Library.getInstance().getMembersSortedBy(comparator);
-    }
 }
