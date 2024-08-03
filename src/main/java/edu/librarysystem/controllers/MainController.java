@@ -88,7 +88,7 @@ public class MainController implements LibraryChangeListener {
 
     @FXML
     public void initialize() {
-        library.addChangeListener(this);  // Register this controller as a listener
+        library.addChangeListener(this);
 
         bookIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         bookTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -98,7 +98,6 @@ public class MainController implements LibraryChangeListener {
         bookIsbnColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         bookYearPublishedColumn.setCellValueFactory(new PropertyValueFactory<>("yearPublished"));
 
-        // Custom cell value factory for loanedToColumn to display the name of the member
         bookLoanedToColumn.setCellValueFactory(cellData -> {
             Book book = cellData.getValue();
             return new SimpleStringProperty(book.getLoanedTo() != null ? book.getLoanedTo().getName() : "");
@@ -184,7 +183,7 @@ public class MainController implements LibraryChangeListener {
         List<Book> books = library.getAllBooks();
         ObservableList<Book> observableBooks = FXCollections.observableArrayList(books);
         bookTableView.setItems(observableBooks);
-        bookTableView.refresh(); // Explicitly refresh the table view
+        bookTableView.refresh();
     }
 
     private void loadMemberData() {
@@ -192,7 +191,7 @@ public class MainController implements LibraryChangeListener {
         List<Member> members = library.getAllMembers();
         ObservableList<Member> observableMembers = FXCollections.observableArrayList(members);
         memberTableView.setItems(observableMembers);
-        memberTableView.refresh(); // Explicitly refresh the table view
+        memberTableView.refresh();
     }
 
     private void loadStatistics() {

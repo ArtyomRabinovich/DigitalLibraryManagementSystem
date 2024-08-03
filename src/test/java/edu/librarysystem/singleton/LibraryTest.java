@@ -206,4 +206,25 @@ public class LibraryTest {
         // Verify that the library change listener was notified twice (once for addBook, once for cloneBook)
         Mockito.verify(listener, Mockito.times(2)).onLibraryChanged();
     }
+
+    /**
+     * Tests that a book cannot be cloned if it is currently loaned out.
+     * Verifies that the cloning fails and the book remains the only copy in the library.
+     */
+    @Test
+    public void testCloneBookWhenLoaned() {
+        library.addBook("Test Title", "Test Author", 123, "1234567890", 2021);
+        assertEquals(1, library.getAllBooks().size());
+
+        Book originalBook = library.getAllBooks().getFirst();
+        library.addMember("Test Member");
+        Member member = library.getAllMembers().getFirst();
+        library.loanBook(originalBook.getId(), member.getId());
+
+        library.cloneBook(originalBook.getId());
+
+        assertEquals(1, library.getAllBooks().size());
+
+        Mockito.verify(listener, Mockito.times(3)).onLibraryChanged();
+    }
 }

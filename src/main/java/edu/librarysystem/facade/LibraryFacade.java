@@ -100,9 +100,10 @@
          * Duplicates a book in the library.
          *
          * @param id the ID of the book to duplicate
-         */
-        public void duplicateBook(int id) {
+=         */
+        public boolean duplicateBook(int id) {
             Command duplicateBookCommand = new DuplicateBookCommand(libraryItemService, id);
             librarySystem.addCommand(duplicateBookCommand);
+            return false;
         }
     }

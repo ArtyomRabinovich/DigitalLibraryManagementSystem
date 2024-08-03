@@ -18,7 +18,6 @@ public class ReturnBookController {
     private void handleReturnBook() {
         String bookIdText = bookIdField.getText();
 
-        // Validate non-empty and positive integer field for bookId
         int bookId;
         try {
             if (bookIdText == null || bookIdText.trim().isEmpty()) {
@@ -33,13 +32,10 @@ public class ReturnBookController {
             return;
         }
 
-        // Return the book
         librarian.returnBook(bookId);
 
-        // Clear the field
         bookIdField.clear();
 
-        // Close the popup
         Stage stage = (Stage) bookIdField.getScene().getWindow();
         stage.close();
     }

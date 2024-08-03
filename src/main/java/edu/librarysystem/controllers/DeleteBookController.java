@@ -32,16 +32,13 @@ public class DeleteBookController {
             return;
         }
 
-        // Attempt to delete the book
         if (!librarian.deleteBook(bookId)) {
             showAlert("Cannot Delete", "The book is currently loaned and cannot be deleted.");
             return;
         }
 
-        // Clear the field
         bookIdField.clear();
 
-        // Close the popup
         Stage stage = (Stage) bookIdField.getScene().getWindow();
         stage.close();
     }

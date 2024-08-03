@@ -21,7 +21,6 @@ public class LoanBookController {
         String bookIdText = bookIdField.getText();
         String memberIdText = memberIdField.getText();
 
-        // Validate non-empty and positive integer fields for bookId and memberId
         int bookId;
         int memberId;
         try {

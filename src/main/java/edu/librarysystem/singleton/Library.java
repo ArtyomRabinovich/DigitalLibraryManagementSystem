@@ -18,7 +18,6 @@ public class Library {
     private final Map<Integer, Member> members;
     private final Factory factory;
 
-    // List of listeners to notify of changes
     private final List<LibraryChangeListener> changeListeners = new ArrayList<>();
 
     /**
@@ -188,7 +187,7 @@ public class Library {
      */
     public void cloneBook(int id) {
         Book book = getBook(id);
-        if (book != null) {
+        if (book != null && book.isAvailable()) {
             Book clonedBook = book.clone();
             items.put(clonedBook.getId(), clonedBook);
             notifyChangeListeners();

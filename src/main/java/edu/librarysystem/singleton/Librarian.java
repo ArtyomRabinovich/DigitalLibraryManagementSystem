@@ -103,8 +103,9 @@ public class Librarian {
      * The duplicated book will have a new unique ID.
      *
      * @param bookId the ID of the book to be duplicated.
+     * @return
      */
-    public void duplicateBook(int bookId) {
-        libraryFacade.duplicateBook(bookId);
+    public boolean duplicateBook(int bookId) {
+        return libraryFacade.duplicateBook(bookId);
     }
 }

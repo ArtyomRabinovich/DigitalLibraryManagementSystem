@@ -18,7 +18,6 @@ public class CloneBookController {
     private void handleCloneBook() {
         String bookIdText = bookIdField.getText();
 
-        // Validate non-empty and integer book ID
         int bookId;
         try {
             if (bookIdText == null || bookIdText.trim().isEmpty()) {
@@ -29,24 +28,24 @@ public class CloneBookController {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            showAlert();
+            showAlert("Invalid Input", "Book ID must be a positive integer.");
             return;
         }
 
-        // Duplicate the book
-        librarian.duplicateBook(bookId);
+        if (!librarian.duplicateBook(bookId)) {
+            showAlert("Cannot Clone", "The book is currently loaned out and cannot be cloned.");
+            return;
+        }
 
-        // Clear the field
         bookIdField.clear();
 
-        // Close the popup
         Stage stage = (Stage) bookIdField.getScene().getWindow();
         stage.close();
     }
 
-    private void showAlert() {
-        Alert alert = new Alert(Alert.AlertType.ERROR, "Book ID must be a positive integer.", ButtonType.OK);
-        alert.setTitle("Invalid Input");
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, content, ButtonType.OK);
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.showAndWait();
     }
